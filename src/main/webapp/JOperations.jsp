@@ -57,13 +57,19 @@
 
 	<hr />
 
+	<%
+	    if ( request.isUserInRole("ecriture") ) {
+	%>
+
 	<form action="" method="POST">
 		<input type="radio" name="operation" value="+" checked> (+)
 		<input type="radio" name="operation" value="-"> (-)
 		<input type="text" name="valeur">
 		<input type="submit" name="demande" value="Traiter">
 	</form>
-
+	<%
+        }
+	%>
 	<%
 	if (!(CodeAffichage.equals("10") || CodeAffichage.equals("12"))) {
 

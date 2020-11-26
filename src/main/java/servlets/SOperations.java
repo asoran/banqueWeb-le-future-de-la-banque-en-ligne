@@ -170,12 +170,6 @@ public class SOperations extends HttpServlet {
 			request.setAttribute("CodeAffichage", MessagesDErreurs.RESERVED_12);
 			request.setAttribute("operationsParDates", operation.getOperationsParDates());
 			request.getRequestDispatcher("/JOperations.jsp").forward(request, response);
-		} else if ( "Authentifiez vous".equals(action) ) {
-			try {
-				authentification();
-			} catch(TraitementException e) {
-				return;
-			}
 		} else {
 			response.setStatus(500);
 		}
