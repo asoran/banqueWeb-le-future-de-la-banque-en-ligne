@@ -24,9 +24,9 @@ public class MessagesDErreurs {
 		messages.put(RESERVED_11, "RESERVED NUMBER");
 		messages.put(RESERVED_12, "RESERVED NUMBER");
 
-		messages.put(EMPTY_VALUE, "Aucune valeur n'a �t� saisie");
-		messages.put(NOT_NUMERIC_VALUE, "La valeur doit �tre num�rique");
-		messages.put(NOT_FOUR_DIGITS, "Le N� de compte doit contenir 4 caract�res");
+		messages.put(EMPTY_VALUE, "Aucune valeur n'a été saisie");
+		messages.put(NOT_NUMERIC_VALUE, "La valeur doit être numérique");
+		messages.put(NOT_FOUR_DIGITS, "Le N° de compte doit contenir 4 caractères");
 		messages.put(ACCESS_ERROR, "Problème pour accéder à ce compte client, vérifiez qu'il est bien valide");
 		messages.put(CONNECTION_ERROR, "Problème d’accès à la base de données, veuillez le signaler à votre administrateur");
 		messages.put(CLOSE_ERROR, "Problème après traitement. Le traitement a été effectué correctement mais il y a eu un problème à signaler à votre administrateur");
