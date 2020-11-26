@@ -23,22 +23,16 @@
 	}
 </style>
 </head>
-<%
-	String CodeAffichage = (String) request.getAttribute("CodeAffichage");
 
-	String noDeCompte = (String) request.getAttribute("noDeCompte");
-	String nom = (String) request.getAttribute("nom");
-	String prenom = (String) request.getAttribute("prenom");
-	String solde = ((BigDecimal) request.getAttribute("solde")).toPlainString();
-%>
 <body>
 
 	<form method="POST" action="j_security_check">
-	    <label for="identifiant">Identifiant de l'utilisateur :
+	    <label for="j_username">Identifiant de l'utilisateur :
 		    <input type="text" name="j_username">
 		</label>
-		<label for="motdepasse"> Mot de passe :
-		    <input type="text" name="j_password">
+		<br>
+		<label for="j_password"> Mot de passe :
+		    <input type="password" name="j_password">
         </label>
 		<input type="submit" name="demande" value="Authentifiez vous">
 	</form>
