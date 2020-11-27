@@ -35,12 +35,11 @@ L'installation nominale doit respecter les contraintes suivantes :
 
 La base de données devra posséder un utilisateur nommé **root** et possédant le mot de passe **root**.
 
-##### Exécution du script d'installation
+##### Exécution du SQL d'installation
 
 Pour initialiser la base de données avec la bonne structure, nous avons prévu un script d'installation qui initialisera 
 tout à votre place.
-Le script s'appelle : **creation.sql**, une fois récupéré, il faut l'exécuter la base de données.
-Il a normalement été fournis dans l'archive.
+Le script [creation.sql](./creation.sql) créera la base de données, tandis que le script [insertion.sql](./insertion.sql) ajoutera des données de test.
 
 #### Installation du serveur Tomcat
 
@@ -116,7 +115,7 @@ Une fois téléchargé, vous pouvez le déplacer dans le dossier **webapps** de 
 
 > Sur linux, ce dossier **webaps** se trouve généralement à l'adresse suivante : */var/lib/tomcat/webapps*.
 
-Une fois la copie effectuée, il sera possible d'accéder via un navigateur à l'appliction.
+Une fois la copie effectuée, il sera possible d'accéder via un navigateur à l'application.
 L'url à suivre est la suivante : http://localhost:8080/BanqueWeb/
 Bien entendu, il est nécessaire de modifier l'adresse *localhost* ou le port *8080* si vous les avez modifiés lors de l'installation de Tomcat.
 
@@ -183,7 +182,7 @@ Remplacez **<sgbd_type>** par la bonne valeur, exemple :
 
 ### Changer l'adresse du serveur tomcat
 
-Pour se retrouver parmis les projets, ou pour faire des url plus simples pour les utilisateurs, il est parfois nécessaire de changer *l'adresse* d'accès de l'application Web.
+Pour se retrouver parmi les projets, ou pour faire des url plus simples pour les utilisateurs, il est parfois nécessaire de changer *l'adresse* d'accès de l'application Web.
 En effet, on peut préférer **http://banque-web.localhost** à **http://localhost:8080/BanqueWeb/**.
 Pour ce faire, il suffit de créer un nouvel host Tomcat, ainsi que de prévoir un dossier spécifique.
 Le dossier spécifique doit être créé dans le dossier **wabapps** de Tomcat. Dans celui ci, il faudra placer le fichier *.war* renommé en tant que **ROOT.war**
