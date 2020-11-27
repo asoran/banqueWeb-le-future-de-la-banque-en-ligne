@@ -21,11 +21,11 @@ Vérifiez bien son installation avant de passer à l'étape suivante.
 
 #### Installation de la base de données
 
-Pour persister ses données, l'application BanqueWeb utilise une base de donnée SQL.
+Pour persister ses données, l'application BanqueWeb utilise une base de données SQL.
 De ce fait, il est nécessaire d'installer une base compatible sur la machine sur laquelle l'installation est effectuée.
 
 Il est recommandé d'utiliser une base MySql pour faire fonctionner l'application. 
-L'installation nominale doit réspecter les contraintes suivantes :
+L'installation nominale doit respecter les contraintes suivantes :
 
 | Contrainte    | Valeur        |
 | ------------- |:-------------:|
@@ -34,13 +34,14 @@ L'installation nominale doit réspecter les contraintes suivantes :
 
 ##### Création de l'utilisateur
 
-La base de données devra posséder un utilisateur nommé **root** et possédant le mot de passe **racine**.
+La base de données devra posséder un utilisateur nommé **root** et possédant le mot de passe **root**.
 
 ##### Exécution du script d'installation
 
 Pour initialiser la base de données avec la bonne structure, nous avons prévu un script d'installation qui initialisera 
 tout à votre place.
-Le script s'appelle : **initialize.sql**, une fois récupéré, il faut l'exécuter la base de données.
+Le script s'appelle : **creation.sql**, une fois récupéré, il faut l'exécuter la base de données.
+Il a normalement été fournis dans l'archive.
 
 #### Installation du serveur Tomcat
 
@@ -59,7 +60,7 @@ balise **Engine** :
 <Realm className="org.apache.catalina.realm.MemoryRealm" />
 ```
 
-> Sur Linux, le fichier **server.xml** se trouvent très probablement à l'adresse suivante : */etc/tomcat/server.xml*
+> Sur Linux, le fichier **server.xml** se trouve très probablement à l'adresse suivante : */etc/tomcat/server.xml*
 
 ##### Création des utilisateurs TomCat pour la gestion de la sécurité
 
@@ -78,10 +79,16 @@ Pour se faire, ajoutez les lignes suivantes dans le fichier **tomcat-users.xml**
 
 #### Installation du bon driver Jdbc
 
-Pour éviter les oublis, nous avons ajouté le driver JDBC dans la section **WEB-INF/lib**.
-De cette manière, aucune action n'est requise lorsqu'une base de données MySql est installée.
-Cependant, si vous avez choisi d'utiliser un autre serveur de gestion de base de données, veuillez vous rendre 
-à la section **SECTION**.
+Pour pouvoir fonctionner, l'application demande un driver JDBC. Dans notre cas, nous utilisons une base Mysql, il nous
+faut donc le driver JDBC de mysql.
+Il est téléchargeable ici :  [lien de téléchargement](https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-8.0.22.zip)
+Il faudra par la suite désarchiver l'archive zip pour récupérer le Jar. 
+Il faudra ensuite le placer dans le dossier **lib** de Tomcat.
+
+> Sur Linux, le dossier **lib** se trouve très certainement à l'adresse suivante : */usr/share/tomcat/lib*
+
+Cependant, si vous avez choisi d'utiliser un autre système de gestion de base de données, veuillez vous rendre 
+à la section [Ajout du bon Driver JDBC](#####-ajout-du-bon-driver-jdbc).
 
 ##### Configuration de l'accès à la base de données :
 
@@ -109,7 +116,7 @@ Il est également téléchargeable à l'adresse suivante : [lien de télécharge
 Une fois téléchargé, vous pouvez le déplacer dans le dossier **webapps** de tomcat.
 
 > Sur linux, ce dossier **webaps** se trouve généralement à l'adresse suivante : */var/lib/tomcat9/webapps*.
->
+
 Une fois la copie effectuée, il sera possible d'accéder via un navigateur à l'appliction.
 L'url à suivre est la suivante : http://localhost:8080/BanqueWeb/
 Bien entendu, il est nécessaire de modifier l'adresse *localhost* ou le port *8080* si vous les avez modifiés lors de l'installation de Tomcat.
@@ -143,7 +150,7 @@ Remplacez :
  - **<sgbd_user>** par le nom de l'utilisateur que vous souhaitez utiliser
  - **<sgbd_password>** par le mot de passe de l'utilisateur que vous souhaitez utiliser
 
-##### Ajout du bon Driver JDBC :
+##### Ajout du bon Driver JDBC
 
 Pour pouvoir faire fonctionner la base de données correctement, l'application nécessite l'accès à un Driver JDBC.
 Or, lorsque vous avez installé un autre serveur de gestion de base de données, le driver fournit par défaut ne marchera plus.
@@ -158,7 +165,7 @@ Exemples de Driver JDBC :
 
  - MariaDB : [lien de téléchargement](https://mariadb.com/download-confirmation?group-name=Data%20Access&release-notes-uri=https%3A//mariadb.com/kb/en/mariadb-connector-j-271-release-notes/&documentation-uri=https%3A//mariadb.com/kb/en/library/mariadb-connector-j/&download-uri=https%3A//dlm.mariadb.com/1484707/Connectors/java/connector-java-2.7.1/mariadb-java-client-2.7.1.jar&product-name=Java%25208%2520connector&download-size=610.29%20KB)
 
-##### Changement du type d'accès de l'url de la base de données :
+##### Changement du type d'accès de l'url de la base de données
 
 Si vous utilisez un système de gestion de base de données incompatible avec la norme mysql, il est nécessaire de changer
 le type d'accès à la base de données.
