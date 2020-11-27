@@ -7,8 +7,10 @@ public class CreationTable {
         Class.forName("com.mysql.cj.jdbc.Driver");
         var connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/test?serverTimezone=GMT", "root", "root");
         var statement = connect.createStatement();
+        // create database BanqueWeb
+        statement.execute("CREATE DATABASE BanqueWeb");
         // create table compte
-        statement.execute("CREATE table COMPTE (" +
+        statement.execute("CREATE table BanqueWeb.compte (" +
                 "NOCOMPTE varchar(4) Primary Key," +
                 "NOM varchar(20)," +
                 "PRENOM varchar(20)," +
@@ -16,7 +18,7 @@ public class CreationTable {
                 ")");
 
         // create table operation
-        statement.execute("Create table OPERATION(" +
+        statement.execute("Create table BanqueWeb.operation (" +
                 "NOCOMPTE VARCHAR(4) NOT NULL," +
                 "DATE date NOT NULL," +
                 "HEURE time NOT NULL," +

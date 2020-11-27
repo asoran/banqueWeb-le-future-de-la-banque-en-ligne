@@ -7,23 +7,16 @@ import static gestionErreurs.MessagesDErreurs.NEGATIV_DEBIT_ERROR;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import javax.sql.DataSource;
+
 import gestionErreurs.TraitementException;
 
 public class BOperations {
-	static {
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
-
 	private String noDeCompte;
 	private String nom;
 	private String prenom;
@@ -52,10 +45,9 @@ public class BOperations {
 	private Connection connection = null;
 	private Statement statement = null;
 
-	public void ouvrirConnexion() throws TraitementException {
+	public void ouvrirConnexion(DataSource ds) throws TraitementException {
 		try {
-			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/test?serverTimezone=GMT", "root",
-					"root");
+			connection = ds.getConnection();
 			connection.setAutoCommit(false);
 			statement = connection.createStatement();
 		} catch (SQLException e) {
@@ -78,7 +70,10 @@ public class BOperations {
 		ResultSet rs = null;
 		try {
 			rs = statement.executeQuery("SELECT * FROM COMPTE where NOCOMPTE=\"" + noDeCompte + "\";");
-			rs.next();
+
+			if (!rs.next()) {
+				throw new TraitementException(ACCESS_ERROR);
+			}
 
 			nom = rs.getString("NOM");
 			prenom = rs.getString("PRENOM");
@@ -93,7 +88,7 @@ public class BOperations {
 
 	private BigDecimal ancienSolde;
 	private BigDecimal nouveauSolde;
-	private BigDecimal valeur;
+	private BigDecimal valeur = BigDecimal.ZERO;
 	private String op;
 
 	public void setValeur(String valeur) {
@@ -123,7 +118,7 @@ public class BOperations {
 	public void traiter() throws TraitementException {
 		ResultSet rs = null;
 		try {
-			rs = statement.executeQuery("SELECT * FROM COMPTE where NOCOMPTE=\"" + noDeCompte + "\";");
+			rs = statement.executeQuery("SELECT * FROM compte where NOCOMPTE=\"" + noDeCompte + "\";");
 			rs.next();
 
 			ancienSolde = rs.getBigDecimal("solde");
@@ -190,7 +185,7 @@ public class BOperations {
 		operationsParDates = new ArrayList<>();
 		try {
 			var res = statement.executeQuery("SELECT * FROM operation where NOCOMPTE=\"" + noDeCompte + "\" "
-					+ "AND DATE > '" + dateInf + "' AND DATE < '" + dateSup + "'" + ";");
+					+ "AND DATE >= '" + dateInf + "' AND DATE <= '" + dateSup + "'" + ";");
 			while (res.next()) {
 				operationsParDates.add("{" + res.getDate("date").toString() + ", " + res.getTime("heure").toString()
 						+ ", " + res.getString("op") + ", " + res.getBigDecimal("valeur").toString() + "}");

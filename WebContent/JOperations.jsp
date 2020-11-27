@@ -1,3 +1,6 @@
+<%@page import="java.util.Date"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="javaBeans.BOperations"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.math.BigDecimal"%>
 <%@page import="gestionErreurs.MessagesDErreurs"%>
@@ -28,14 +31,18 @@
 </head>
 <%
 	String CodeAffichage = (String) request.getAttribute("CodeAffichage");
+	BOperations op = (BOperations) request.getSession().getAttribute("op");
 
-	String noDeCompte = (String) request.getAttribute("noDeCompte");
-	String nom = (String) request.getAttribute("nom");
-	String prenom = (String) request.getAttribute("prenom");
-	String solde = ((BigDecimal) request.getAttribute("solde")).toPlainString();
+	String noDeCompte = op.getNoDeCompte();
+	String nom = op.getNom();
+	String prenom = op.getPrenom();
+	String solde = op.getSolde().toPlainString();
+
+	String dateInf = "";
+	String dateSup = "";
 %>
 <body>
-	<h1>La saisie s'est bien passée</h1>
+	<h1>Consulation du client <%=noDeCompte%></h1>
 	<table>
 		<thead>
 			<tr>
@@ -55,57 +62,68 @@
 		</tbody>
 	</table>
 
+	<%
+    if ( request.isUserInRole("ecriture") ) {
+    	String value = "";
+    	if(!(CodeAffichage.equals(MessagesDErreurs.RESERVED_10) || CodeAffichage.equals(MessagesDErreurs.RESERVED_11))) {
+    		value = op.getValeur();
+    	}
+	%>
 	<hr />
-
 	<form action="" method="POST">
 		<input type="radio" name="operation" value="+" checked> (+)
 		<input type="radio" name="operation" value="-"> (-)
-		<input type="text" name="valeur">
+		<input type="text" name="valeur" value="">
 		<input type="submit" name="demande" value="Traiter">
 	</form>
 
 	<%
-	if (!(CodeAffichage.equals("10") || CodeAffichage.equals("12"))) {
-
-		if(CodeAffichage.equals("11")) {
-			String op = (String) request.getAttribute("op");
-			String valeur = (String) request.getAttribute("valeur");
-			String ancienSolde = (String) ((BigDecimal) request.getAttribute("ancienSolde")).toPlainString();
-			String nouveauSolde = (String) ((BigDecimal) request.getAttribute("nouveauSolde")).toPlainString();
+		if(CodeAffichage.equals(MessagesDErreurs.RESERVED_11)) {
+			String operation = op.getOp();
+			String valeur = op.getValeur();
+			String ancienSolde = op.getAncienSolde().toPlainString();
+			String nouveauSolde = op.getNouveauSolde().toPlainString();
 			%>
-			<p class="success">Opération réalisée: <%=op%> <%=valeur%> Ancien Solde: <%=ancienSolde%> Nouveau Solde: <%=nouveauSolde%></p>
-			<%
-		} else {
-			%>
-			<p class="error"><%=MessagesDErreurs.getMessageDerreur(CodeAffichage)%></p>
+			<p class="success">Opération réalisée: <%=operation%> <%=valeur%> Ancien Solde: <%=ancienSolde%> Nouveau Solde: <%=nouveauSolde%></p>
 			<%
 		}
 	}
 	%>
-	<hr/>
 
+	<%
+		if(CodeAffichage.equals(MessagesDErreurs.RESERVED_10)) {
+			String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+			dateInf = today;
+			dateSup = today;
+		} else {
+			dateInf = op.getDateInf();
+			dateSup = op.getDateSup();
+		}
+	%>
 	<form action="" method="POST">
-		<input type="date" name="dateInf">
-		<input type="date" name="dateSup">
+		<input type="date" name="dateInf" value="<%=dateInf%>">
+		<input type="date" name="dateSup" value="<%=dateSup%>">
 		<input type="submit" name="demande" value="Lister">
 	</form>
 
 	<%
-	if(!CodeAffichage.equals("10")) {
-		if(CodeAffichage.equals("12")) {
-			ArrayList<String> operationsParDates = (ArrayList<String>) request.getAttribute("operationsParDates");
-
-			for(String op : operationsParDates) {
-			%>
-				<p class="success"><%=op%></p>
-			<%
-			}
-		} else {
-			%>
-			<p class="error"><%=MessagesDErreurs.getMessageDerreur(CodeAffichage)%></p>
-			<%
-		}
-	}
+	// If not 10 or 11 or 12, display error
+		if (!(
+			CodeAffichage.equals(MessagesDErreurs.RESERVED_10)
+			|| CodeAffichage.equals(MessagesDErreurs.RESERVED_11)
+			|| CodeAffichage.equals(MessagesDErreurs.RESERVED_12)
+		)) {
 	%>
+		<p class="error"><%=MessagesDErreurs.getMessageDerreur(CodeAffichage)%></p>	
+	<%
+		}	
+	%>
+
+	<hr/>
+
+	<form action="" method="POST">
+		<input type="submit" name="demande" value="Fin de traitement">
+	</form>
+	
 </body>
 </html>

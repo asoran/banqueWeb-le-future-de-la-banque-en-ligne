@@ -1,3 +1,4 @@
+<%@page import="javaBeans.BOperations"%>
 <%@page import="java.util.Optional"%>
 <%@page import="gestionErreurs.MessagesDErreurs"%>
 <%@ page language="java" contentType="text/html; charset=UTF8"
@@ -8,40 +9,41 @@
 <meta charset="UTF8">
 <title>JSaisieNoDeCompte</title>
 <style>
-	.error {
-		color: red;
-	}
-	.success {
-		color: blue;
-	}
-	table {
-		border: 1px solid black;
-	}
-	td, td {
-		border: 1px solid black;
-	}
-	th {
-		background-color: rgb(100, 100, 100);
-	}
+.error {
+	color: red;
+}
+
+.success {
+	color: blue;
+}
 </style>
 </head>
 <%
 	String CodeAffichage = (String) request.getAttribute("CodeAffichage");
-	String oldNoDeCompte = (String) Optional.ofNullable(request.getAttribute("oldNoDeCompte")).orElse("");
+	String noDeCompte = "";
+	if(!CodeAffichage.equals("0")) {
+		BOperations op = (BOperations) request.getSession().getAttribute("op");
+		noDeCompte = op.getNoDeCompte();
+	}
 %>
 <body>
 
 	<H1>Saisie du N° de compte:</H1>
 	<form action="" method="POST">
 		<label for="NoDeCompte">Entrer le N° de compte: <input
-			type="text" name="NoDeCompte" value="<%=oldNoDeCompte%>">
+			type="text" name="NoDeCompte" value="<%= noDeCompte %>">
 		</label> <input type="submit" name="demande" value="Consulter">
+	</form>
+
+	<br/>
+	<form action="" method="POST">
+		<input type="submit" name="demande" value="Deconnexion">
 	</form>
 
 	<%
 	if (!CodeAffichage.equals("0")) {
 	%>
-		<p class="error"><%=MessagesDErreurs.getMessageDerreur(CodeAffichage)%></p>
+	<p class="error"><%=MessagesDErreurs.getMessageDerreur(CodeAffichage)%></p>
 	<%
 	}
 	%>

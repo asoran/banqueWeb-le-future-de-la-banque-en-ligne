@@ -7,7 +7,7 @@ public class TestConsultation {
     public static void main(String[] args) {
         try {
             var op = new BOperations();
-            op.ouvrirConnexion();
+//            op.ouvrirConnexion();
 
             op.setNoDeCompte("X04E");
             op.consulter();

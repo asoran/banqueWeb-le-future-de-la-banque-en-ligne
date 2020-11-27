@@ -6,7 +6,7 @@ public class TestListeParDates {
 	public static void main(String[] args) {
 		try {
 			var op = new BOperations();
-			op.ouvrirConnexion();
+//			op.ouvrirConnexion();
 
 			op.setNoDeCompte("E85S");
 			op.setDateInf("2020-10-01");
